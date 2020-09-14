@@ -3,7 +3,6 @@ package chromedp
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"sync"
 	"sync/atomic"
 
@@ -133,9 +132,10 @@ func (t *Target) run(ctx context.Context) {
 }
 
 func (t *Target) Execute(ctx context.Context, method string, params easyjson.Marshaler, res easyjson.Unmarshaler) error {
-	if method == target.CommandCloseTarget {
-		return errors.New("to close the target, cancel its context or use chromedp.Cancel")
-	}
+    // pmurley: Removing this so I can squash new targets. Not TOTALLY sure of the implications in other chromedp code, so watch carefully
+	//if method == target.CommandCloseTarget {
+	//	  return errors.New("to close the target, cancel its context or use chromedp.Cancel")
+	//}
 
 	id := atomic.AddInt64(&t.browser.next, 1)
 	lctx, cancel := context.WithCancel(ctx)
